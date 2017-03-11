@@ -21,19 +21,23 @@ import csv
 import os
 import sys
 
-sys.path.append(os.path.realpath('..'))
+sys.path.append(os.path.realpath('../..'))
 from utils.graph import Graph
 
-path = '~/benchmark/suites/powergrid/re-europe/RE-Europe_dataset_package/Metadata/'
+path = '~/benchmark/suites/powergrid/us-western/opsahl-powergrid/'
 path = os.path.expanduser(path)
 
 def create_graph(filepath):
     g=Graph()
     with open(filepath) as csvfile:
-        reader  = csv.DictReader(csvfile)
-        #print reader.fieldnames
-        for row in reader:
-            g.add_edge(row['fromNode'],row['toNode'])
+        for line in csvfile:
+            line=line.split()
+            if line == []:
+                continue
+            if line[0] == '%':
+                continue
+            else:
+                g.add_edge(line[0],line[1])
     return g
 
 def write_graph(graph,output_file, filename,output_type='gr'):
@@ -59,7 +63,7 @@ for filename in os.listdir(path):
     #     continue
     # if filename.startswith('vertices'):
     #     continue
-    if not filename in ('network_edges.csv', 'network_hvdc_links.csv'):
+    if not filename in ('out.opsahl-powergrid'):
         continue
     filepath=os.path.join(path,filename)
     print 'filepath=', filepath
