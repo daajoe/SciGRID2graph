@@ -24,7 +24,7 @@ import sys
 sys.path.append(os.path.realpath('..'))
 from utils.graph import Graph
 
-path = '~/benchmark/suites/powergrid/SciGRID/data/03_network/'
+path = '~/benchmark/suites/powergrid/re-europe/RE-Europe_dataset_package/Metadata/'
 path = os.path.expanduser(path)
 
 def create_graph(filepath):
@@ -33,7 +33,7 @@ def create_graph(filepath):
         reader  = csv.DictReader(csvfile)
         #print reader.fieldnames
         for row in reader:
-            g.add_edge(row['v_id_1'],row['v_id_2'])
+            g.add_edge(row['fromNode'],row['toNode'])
     return g
 
 def write_graph(graph,output_file, filename,output_type='gr'):
@@ -54,12 +54,12 @@ def write_graph(graph,output_file, filename,output_type='gr'):
     else:
         print output.getvalue()
 
-
-import os
 for filename in os.listdir(path):
-    if not filename.endswith('.csvdata'):
-        continue
-    if filename.startswith('vertices'):
+    # if not filename.endswith('.csvdata'):
+    #     continue
+    # if filename.startswith('vertices'):
+    #     continue
+    if filename != 'network_edges.csv':
         continue
     filepath=os.path.join(path,filename)
     print 'filepath=', filepath
